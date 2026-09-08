@@ -42,10 +42,18 @@ export function CounterApp() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowUp') {
         e.preventDefault();
-        handleIncrement();
+        setCount((currentCount) => {
+          const newCount = currentCount + step;
+          setHistory((prevHistory) => [...prevHistory, newCount]);
+          return newCount;
+        });
       } else if (e.key === 'ArrowDown') {
         e.preventDefault();
-        handleDecrement();
+        setCount((currentCount) => {
+          const newCount = currentCount - step;
+          setHistory((prevHistory) => [...prevHistory, newCount]);
+          return newCount;
+        });
       }
     };
 
