@@ -1,20 +1,13 @@
-import { useState } from 'react'
-import './App.css'
-import HistoryTracking from './HistoryTracking'
+// App.tsx
 
-function App() {
-  const [count, setCount] = useState(0)
+import CounterApp from './CounterApp';
 
+export function App() {
   return (
-    <div className="App">
-      <h1>Advanced Counter</h1>
-      <p>Count: {count}</p>
-      <button onClick={() => setCount(count + 1)}>Increment</button>
-      <button onClick={() => setCount(count - 1)}>Decrement</button>
-      <button onClick={() => setCount(0)}>Reset</button>
-      <HistoryTracking currentHistory={[count]} onHistoryChange={() => {}} />
-    </div>
-  )
+    <main style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+      <CounterApp />
+    </main>
+  );
 }
 
 export default App;
