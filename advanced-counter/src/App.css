@@ -1,24 +1,68 @@
+/* =========================================================
+   Nostalgic Modern Arcade / CRT Theme Variables
+   ========================================================= */
+@import "tailwindcss";
+
+:root {
+  --arcade-bg: #0d0b18;
+  --arcade-panel: #16122c;
+  --arcade-border: #00ffcc;
+  --arcade-neon-pink: #ff007f;
+  --arcade-neon-cyan: #00f0ff;
+  --arcade-neon-yellow: #ffe600;
+  --arcade-text: #e0e5ff;
+  --arcade-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+}
+
+/* Base Body Vibe */
+body {
+  background-color: var(--arcade-bg);
+  color: var(--arcade-text);
+  font-family: 'Courier New', Courier, monospace;
+}
+
+/* =========================================================
+   Arcade Counter Button
+   ========================================================= */
 .counter {
   font-size: 16px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: var(--accent);
-  background: var(--accent-bg);
-  border: 2px solid transparent;
-  transition: border-color 0.3s;
+  padding: 8px 16px;
+  border-radius: 4px;
+  color: var(--arcade-neon-yellow);
+  background: linear-gradient(180deg, #221b42 0%, #110d24 100%);
+  border: 2px solid var(--arcade-neon-cyan);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   margin-bottom: 24px;
+  box-shadow: 0 4px 0 var(--arcade-neon-cyan), 0 0 10px rgba(0, 240, 255, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: bold;
+  cursor: pointer;
 
   &:hover {
-    border-color: var(--accent-border);
+    border-color: var(--arcade-neon-pink);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 var(--arcade-neon-pink), 0 0 15px rgba(255, 0, 127, 0.6);
   }
+
+  &:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 var(--arcade-neon-pink);
+  }
+
   &:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
+    outline: 2px dashed var(--arcade-neon-yellow);
+    outline-offset: 4px;
   }
 }
 
+/* =========================================================
+   Hero Stage (Floating Arcade Hologram)
+   ========================================================= */
 .hero {
   position: relative;
+  filter: drop-shadow(0 0 12px rgba(255, 0, 127, 0.3));
 
   .base,
   .framework,
@@ -31,6 +75,7 @@
     width: 170px;
     position: relative;
     z-index: 0;
+    filter: brightness(1.2) contrast(1.1);
   }
 
   .framework,
@@ -42,8 +87,8 @@
     z-index: 1;
     top: 34px;
     height: 28px;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
-      scale(1.4);
+    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg) scale(1.4);
+    filter: drop-shadow(0 0 8px var(--arcade-neon-pink));
   }
 
   .vite {
@@ -51,11 +96,14 @@
     top: 107px;
     height: 26px;
     width: auto;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
-      scale(0.8);
+    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg) scale(0.8);
+    filter: drop-shadow(0 0 8px var(--arcade-neon-cyan));
   }
 }
 
+/* =========================================================
+   Center Area (Main Screen HUD)
+   ========================================================= */
 #center {
   display: flex;
   flex-direction: column;
@@ -63,6 +111,11 @@
   place-content: center;
   place-items: center;
   flex-grow: 1;
+  background: radial-gradient(circle, rgba(22, 18, 44, 0.8) 0%, rgba(13, 11, 24, 0.95) 100%);
+  border: 2px solid #231d45;
+  border-radius: 12px;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+  padding: 40px;
 
   @media (max-width: 1024px) {
     padding: 32px 20px 24px;
@@ -70,14 +123,21 @@
   }
 }
 
+/* =========================================================
+   Next Steps (Arcade Level Panels)
+   ========================================================= */
 #next-steps {
   display: flex;
-  border-top: 1px solid var(--border);
+  border-top: 2px solid var(--arcade-neon-pink);
   text-align: left;
+  background: var(--arcade-panel);
+  box-shadow: 0 -5px 20px rgba(255, 0, 127, 0.15);
 
   & > div {
     flex: 1 1 0;
     padding: 32px;
+    position: relative;
+
     @media (max-width: 1024px) {
       padding: 24px 20px;
     }
@@ -87,6 +147,7 @@
     margin-bottom: 16px;
     width: 22px;
     height: 22px;
+    filter: drop-shadow(0 0 5px var(--arcade-neon-cyan));
   }
 
   @media (max-width: 1024px) {
@@ -96,19 +157,22 @@
 }
 
 #docs {
-  border-right: 1px solid var(--border);
+  border-right: 2px solid #231d45;
 
   @media (max-width: 1024px) {
     border-right: none;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 2px solid #231d45;
   }
 }
 
+/* =========================================================
+   Inventory / Social Links (Pixel Inventory Slot style)
+   ========================================================= */
 #next-steps ul {
   list-style: none;
   padding: 0;
   display: flex;
-  gap: 8px;
+  gap: 12px;
   margin: 32px 0 0;
 
   .logo {
@@ -116,23 +180,35 @@
   }
 
   a {
-    color: var(--text-h);
-    font-size: 16px;
-    border-radius: 6px;
-    background: var(--social-bg);
+    color: var(--arcade-neon-cyan);
+    font-size: 15px;
+    border-radius: 4px;
+    background: #110d24;
+    border: 1px solid var(--arcade-neon-cyan);
     display: flex;
-    padding: 6px 12px;
+    padding: 8px 14px;
     align-items: center;
     gap: 8px;
     text-decoration: none;
-    transition: box-shadow 0.3s;
+    transition: all 0.2s ease;
+    font-weight: bold;
+    letter-spacing: 0.5px;
 
     &:hover {
-      box-shadow: var(--shadow);
+      background: var(--arcade-neon-cyan);
+      color: #0d0b18;
+      box-shadow: 0 0 15px var(--arcade-neon-cyan);
+      transform: scale(1.05);
+
+      .button-icon {
+        filter: invert(1);
+      }
     }
+
     .button-icon {
       height: 18px;
       width: 18px;
+      transition: filter 0.2s ease;
     }
   }
 
@@ -153,14 +229,28 @@
   }
 }
 
+/* =========================================================
+   Bottom Spacer
+   ========================================================= */
 #spacer {
   height: 88px;
-  border-top: 1px solid var(--border);
+  border-top: 2px solid #231d45;
+  background: repeating-linear-gradient(
+    45deg,
+    #0d0b18,
+    #0d0b18 10px,
+    #130f28 10px,
+    #130f28 20px
+  );
+
   @media (max-width: 1024px) {
     height: 48px;
   }
 }
 
+/* =========================================================
+   Retro Ticks / Corner Bracket Accents
+   ========================================================= */
 .ticks {
   position: relative;
   width: 100%;
@@ -169,16 +259,290 @@
   &::after {
     content: '';
     position: absolute;
-    top: -4.5px;
-    border: 5px solid transparent;
+    top: -6px;
+    border: 6px solid transparent;
   }
 
   &::before {
     left: 0;
-    border-left-color: var(--border);
+    border-left-color: var(--arcade-neon-pink);
+    border-top-color: var(--arcade-neon-pink);
   }
+
   &::after {
     right: 0;
-    border-right-color: var(--border);
+    border-right-color: var(--arcade-neon-cyan);
+    border-top-color: var(--arcade-neon-cyan);
+  }
+}
+
+/* =========================================================
+   Counter Console
+   ========================================================= */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background:
+    linear-gradient(rgba(13, 11, 24, 0.82), rgba(13, 11, 24, 0.94)),
+    repeating-linear-gradient(0deg, rgba(0, 240, 255, 0.05) 0 1px, transparent 1px 4px),
+    var(--arcade-bg);
+}
+
+button,
+input {
+  font: inherit;
+}
+
+.arcade-shell {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  padding: 32px 20px;
+}
+
+.counter-console {
+  position: relative;
+  width: min(100%, 680px);
+  overflow: hidden;
+  padding: clamp(24px, 5vw, 48px);
+  border: 2px solid var(--arcade-border);
+  background: linear-gradient(145deg, rgba(22, 18, 44, 0.98), rgba(13, 11, 24, 0.98));
+  box-shadow: 0 0 0 6px rgba(0, 240, 255, 0.06), 0 20px 70px rgba(0, 0, 0, 0.65), var(--arcade-shadow);
+}
+
+.counter-console::before,
+.counter-console::after {
+  position: absolute;
+  content: '';
+  pointer-events: none;
+}
+
+.counter-console::before {
+  inset: 12px;
+  border: 1px solid rgba(255, 0, 127, 0.35);
+}
+
+.counter-console::after {
+  top: 0;
+  left: 12%;
+  width: 36%;
+  height: 3px;
+  background: var(--arcade-neon-pink);
+  box-shadow: 0 0 12px var(--arcade-neon-pink);
+}
+
+.console-header,
+.counter-display,
+.step-control,
+.counter-controls,
+.history-panel {
+  position: relative;
+  z-index: 1;
+}
+
+.console-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 8px 16px;
+  border-bottom: 1px solid rgba(0, 240, 255, 0.35);
+  padding-bottom: 20px;
+}
+
+.eyebrow,
+.display-label,
+.status-light,
+.history-heading span {
+  margin: 0;
+  color: var(--arcade-neon-cyan);
+  font-size: 0.72rem;
+  font-weight: bold;
+  letter-spacing: 0.16em;
+}
+
+.console-header h1 {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--arcade-text);
+  font-size: clamp(1.7rem, 5vw, 2.6rem);
+  letter-spacing: 0.04em;
+  text-shadow: 3px 3px 0 rgba(255, 0, 127, 0.55);
+  text-transform: uppercase;
+}
+
+.status-light {
+  color: var(--arcade-neon-yellow);
+  text-align: right;
+}
+
+.status-light::before {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background: var(--arcade-neon-yellow);
+  box-shadow: 0 0 10px var(--arcade-neon-yellow);
+  content: '';
+}
+
+.counter-display {
+  display: grid;
+  place-items: center;
+  gap: 10px;
+  margin: 28px 0;
+  padding: 28px 20px;
+  border: 1px solid rgba(0, 240, 255, 0.45);
+  background: rgba(5, 5, 16, 0.72);
+  color: var(--arcade-neon-yellow);
+  font-size: clamp(4rem, 16vw, 7rem);
+  font-weight: bold;
+  line-height: 0.9;
+  text-shadow: 0 0 8px var(--arcade-neon-yellow), 0 0 28px rgba(255, 230, 0, 0.45);
+}
+
+.display-label {
+  color: var(--arcade-neon-pink);
+  font-size: 0.7rem;
+  line-height: 1;
+  text-shadow: none;
+}
+
+.step-control {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  color: var(--arcade-text);
+  font-size: 0.85rem;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+}
+
+.step-control input {
+  width: 84px;
+  padding: 10px;
+  border: 1px solid var(--arcade-neon-cyan);
+  background: #080712;
+  color: var(--arcade-neon-yellow);
+  text-align: center;
+  outline: none;
+}
+
+.step-control input:focus {
+  border-color: var(--arcade-neon-pink);
+  box-shadow: 0 0 12px rgba(255, 0, 127, 0.45);
+}
+
+.counter-controls {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.counter {
+  margin: 0;
+  padding: 13px 12px;
+}
+
+.counter-reset,
+.clear-history {
+  border-color: var(--arcade-neon-pink);
+  color: var(--arcade-neon-pink);
+  box-shadow: 0 4px 0 var(--arcade-neon-pink), 0 0 10px rgba(255, 0, 127, 0.2);
+}
+
+.counter-reset:hover,
+.clear-history:hover {
+  box-shadow: 0 6px 0 var(--arcade-neon-yellow), 0 0 15px rgba(255, 230, 0, 0.45);
+}
+
+.history-panel {
+  margin-top: 32px;
+  padding-top: 22px;
+  border-top: 1px solid rgba(255, 0, 127, 0.6);
+}
+
+.history-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.history-heading h2 {
+  margin: 0;
+  color: var(--arcade-text);
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.history-heading span {
+  color: var(--arcade-neon-pink);
+  font-size: 0.65rem;
+}
+
+.history-values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 18px 0;
+}
+
+.history-values span {
+  min-width: 42px;
+  padding: 8px 10px;
+  border: 1px solid rgba(0, 240, 255, 0.45);
+  background: rgba(0, 240, 255, 0.06);
+  color: var(--arcade-neon-cyan);
+  text-align: center;
+}
+
+.history-values span:last-child {
+  border-color: var(--arcade-neon-yellow);
+  color: var(--arcade-neon-yellow);
+}
+
+.clear-history {
+  padding: 8px 12px;
+  border-width: 1px;
+  background: transparent;
+  box-shadow: none;
+  cursor: pointer;
+  font-size: 0.72rem;
+  font-weight: bold;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.empty-history {
+  color: rgba(224, 229, 255, 0.65);
+}
+
+@media (max-width: 520px) {
+  .arcade-shell {
+    padding: 16px 10px;
+  }
+
+  .counter-console {
+    padding: 24px 18px;
+  }
+
+  .console-header {
+    grid-template-columns: 1fr;
+  }
+
+  .status-light {
+    text-align: left;
+  }
+
+  .counter-controls {
+    grid-template-columns: 1fr;
   }
 }

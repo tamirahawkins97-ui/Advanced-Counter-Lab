@@ -1,10 +1,10 @@
 // App.tsx
-
+import './App.css';
 import CounterApp from './CounterApp';
 
 export function App() {
   return (
-    <main style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
+    <main className="arcade-shell">
       <CounterApp />
     </main>
   );

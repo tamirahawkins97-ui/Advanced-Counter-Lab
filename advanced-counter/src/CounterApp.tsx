@@ -1,24 +1,29 @@
 // CounterApp.tsx
-import React, { useState, useEffect, useCallback } from 'react';
-import { HistoryTracker } from './HistoryTracking';
+import { useState, useEffect } from 'react';
+import HistoryTracker from './HistoryTracking';
 import { getStorageValue, saveToStorageWithCleanup } from './LocalStorage';
 
 export function CounterApp() {
-  // 1. Initialize State lazily from LocalStorage
+  // 1. Initial States from LocalStorage
   const [count, setCount] = useState<number>(() => getStorageValue('counter_count', 0));
   const [history, setHistory] = useState<number[]>(() => getStorageValue('counter_history', [0]));
   const [step, setStep] = useState<number>(1);
 
-  // 2. State Updater Callback
-  const updateCount = useCallback((delta: number) => {
-    setCount((prevCount) => {
-      const nextCount = prevCount + delta;
-      setHistory((prevHistory) => [...prevHistory, nextCount]);
-      return nextCount;
-    });
-  }, []);
+  // 2. Increment Handler (Adds step once, adds new total to history once)
+  const handleIncrement = () => {
+    const newCount = count + step;
+    setCount(newCount);
+    setHistory((prevHistory) => [...prevHistory, newCount]);
+  };
 
-  // 3. Reset Mechanism
+  // 3. Decrement Handler (Subtracts step once, adds new total to history once)
+  const handleDecrement = () => {
+    const newCount = count - step;
+    setCount(newCount);
+    setHistory((prevHistory) => [...prevHistory, newCount]);
+  };
+
+  // 4. Reset Everything Back to 0
   const handleReset = () => {
     setCount(0);
     setHistory([0]);
@@ -26,60 +31,63 @@ export function CounterApp() {
     localStorage.removeItem('counter_history');
   };
 
-  // 4. Local Storage Auto-Save Effect with Cleanup
+  // 5. Auto-Save Effect
   useEffect(() => {
     const cleanup = saveToStorageWithCleanup(count, history);
-    return () => cleanup(); // Cancels pending saves on rapid updates
+    return () => cleanup();
   }, [count, history]);
 
-  // 5. Keyboard Listener Effect with Cleanup & Step Dependency
+  // 6. Keyboard Listeners (ArrowUp / ArrowDown)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowUp') {
         e.preventDefault();
-        updateCount(step);
+        handleIncrement();
       } else if (e.key === 'ArrowDown') {
         e.preventDefault();
-        updateCount(-step);
+        handleDecrement();
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
 
-    // Cleanup listener on unmount or when step changes
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [step, updateCount]);
+  }, [count, step]); // Listens to current count & step to avoid stale clicks
 
   return (
-    <div style={{ padding: '24px', fontFamily: 'sans-serif', maxWidth: '400px' }}>
-      <h2>Interactive Counter</h2>
+    <div className="counter-console">
+      <div className="console-header">
+        <p className="eyebrow">PLAYER 01 // LIVE SESSION</p>
+        <h1>Interactive Counter</h1>
+        <span className="status-light">SYSTEM ONLINE</span>
+      </div>
       
-      <div style={{ fontSize: '2.5rem', fontWeight: 'bold', margin: '16px 0' }}>
+      <div className="counter-display" aria-live="polite">
+        <span className="display-label">CURRENT SCORE</span>
         {count}
       </div>
 
       {/* Step Input */}
-      <div style={{ marginBottom: '16px' }}>
-        <label htmlFor="step">Custom Step Value: </label>
+      <div className="step-control">
+        <label htmlFor="step">STEP VALUE</label>
         <input
           id="step"
           type="number"
           value={step}
           onChange={(e) => setStep(Math.max(1, Number(e.target.value)))}
-          style={{ width: '60px', padding: '4px' }}
         />
       </div>
 
       {/* Controls */}
-      <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
-        <button onClick={() => updateCount(step)}>+ ({step}) [↑]</button>
-        <button onClick={() => updateCount(-step)}>- ({step}) [↓]</button>
-        <button onClick={handleReset}>Reset All</button>
+      <div className="counter-controls">
+        <button className="counter counter-primary" onClick={handleIncrement}>+ ({step}) [↑]</button>
+        <button className="counter counter-secondary" onClick={handleDecrement}>- ({step}) [↓]</button>
+        <button className="counter counter-reset" onClick={handleReset}>Reset All</button>
       </div>
 
-      {/* Render Child Component */}
+      {/* History Child Component */}
       <HistoryTracker history={history} onClearHistory={handleReset} />
     </div>
   );

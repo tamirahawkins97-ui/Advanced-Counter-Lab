@@ -13,16 +13,22 @@ export function HistoryTracker({ history, onClearHistory }: HistoryTrackerProps)
   }, [history]);
 
   return (
-    <div style={{ marginTop: '20px', borderTop: '1px solid #ccc', paddingTop: '16px' }}>
-      <h3>History Tracker</h3>
+    <div className="history-panel">
+      <div className="history-heading">
+        <h2>History Tracker</h2>
+        <span>{history.length - 1} MOVES</span>
+      </div>
 
       {history.length === 0 ? (
-        <p>No history available.</p>
+        <p className="empty-history">No history available.</p>
       ) : (
         <>
-          <p><strong>Previous counts:</strong> {history.join(', ')}</p>
-          <p><small>Total changes: {history.length - 1}</small></p>
-          <button onClick={onClearHistory}>Clear History</button>
+          <div className="history-values" aria-label="Previous counts">
+            {history.map((value, index) => (
+              <span key={`${value}-${index}`}>{value}</span>
+            ))}
+          </div>
+          <button className="clear-history" onClick={onClearHistory}>Clear History</button>
         </>
       )}
     </div>
