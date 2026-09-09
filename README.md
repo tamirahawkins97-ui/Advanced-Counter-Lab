@@ -25,15 +25,3 @@ A feature-rich React and TypeScript counter application built with Vite and Tail
 
 ---
 
-### Project Architecture
-
-```text
-src/
-├── components/
-│   └── HistoryTracker.tsx    # Sub-component rendering log of state changes
-├── utils/
-│   └── LocalStorage.ts       # Persistence helpers and cleanup utilities
-├── App.tsx                   # Top-level application layout
-├── CounterApp.tsx            # Counter core logic and keyboard listeners
-├── App.css                   # Custom arcade theme and pseudo-element styles
-└── main.tsx                  # Application entry point
